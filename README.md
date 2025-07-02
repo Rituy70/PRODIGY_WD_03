@@ -21,3 +21,6 @@ CSS3 for styling
 JavaScript for game logic and interactivity
 
 
+Notes: The project was also tested on CodePen for layout and responsiveness. All features work best in a local or GitHub-hosted environment.
+
+
