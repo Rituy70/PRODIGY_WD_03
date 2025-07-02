@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tic Tac Toe - Golden & Black</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Hide elements with hidden class */
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <main class="background">
+    <div class="title">
+      <h1>Tic Tac Toe</h1>
+    </div>
+
+    <section class="player-count">
+      <label for="playerCount">Number of Players (max 3):</label>
+      <select name="playerCount" id="playerCount">
+        <option value="1" selected>1</option>
+        <option value="2">2</option>
+        <option value="3" disabled>3 (Not supported yet)</option>
+      </select>
+    </section>
+
+    <section class="player-names">
+      <div class="player playerX">
+        <label for="playerXName">Player X Name:</label>
+        <input
+          type="text"
+          id="playerXName"
+          name="playerXName"
+          placeholder="Player X"
+          maxlength="10"
+        />
+      </div>
+
+      <div class="player playerO">
+        <label for="playerOName">Player O Name:</label>
+        <input
+          type="text"
+          id="playerOName"
+          name="playerOName"
+          placeholder="Player O"
+          maxlength="10"
+        />
+      </div>
+
+      <div class="player playerZ hidden">
+        <label for="playerZName">Player Z Name:</label>
+        <input
+          type="text"
+          id="playerZName"
+          name="playerZName"
+          placeholder="Player Z"
+          maxlength="10"
+        />
+      </div>
+    </section>
+
+    <section class="game-mode">
+      <label for="gameMode">Select Game Mode:</label>
+      <select name="gameMode" id="gameMode">
+        <option value="pvp">Player vs Player</option>
+        <option value="pvc">Player vs Computer</option>
+      </select>
+    </section>
+
+    <section class="board-size">
+      <label for="boardSize">Board Size:</label>
+      <select name="boardSize" id="boardSize">
+        <option value="3">3 x 3</option>
+        <option value="4">4 x 4</option>
+        <option value="5">5 x 5</option>
+      </select>
+    </section>
+
+    <section class="timer">
+      <label for="timer">Timer:</label>
+      <span id="timer">0</span> seconds
+    </section>
+
+    <section class="display announcer hide" aria-live="polite"></section>
+
+    <div id="boardContainer" class="container"></div>
+
+    <section class="controls">
+      <button id="startBtn">Start</button>
+      <button id="pauseBtn" disabled>Pause</button>
+      <button id="resetBtn" disabled>Reset</button>
+    </section>
+
+    <section class="scoreboard">
+      <div id="scoreX" class="score playerX">Player X Score: 0</div>
+      <div id="scoreO" class="score playerO">Player O Score: 0</div>
+      <div id="scoreZ" class="score playerZ hidden">Player Z Score: 0</div>
+      <div id="scoreDraw" class="score">Draws: 0</div>
+    </section>
+
+    <section class="move-log">
+      <h3>Move History</h3>
+      <ol id="moveHistory"></ol>
+    </section>
+
+    <section class="social-share hidden">
+      <button id="shareBtn">Share Result</button>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
