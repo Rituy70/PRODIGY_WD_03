@@ -2,6 +2,8 @@ const soundStart = new Audio('sounds/start.mp3');
 const soundWin = new Audio('sounds/win.mp3');
 const soundDraw = new Audio('sounds/draw.mp3');
 const soundButton = new Audio('sounds/click.mp3');
+const soundMove = new Audio('sounds/click.mp3'); // Added
+const soundTie = new Audio('sounds/draw.mp3');    // Added
 
 function announceResult(message) {
   announcer.textContent = message;
@@ -12,7 +14,6 @@ function clearAnnouncement() {
   announcer.textContent = "";
   announcer.classList.add("hide");
 }
-
 
 const container = document.querySelector(".container");
 const display = document.querySelector(".display");
@@ -25,7 +26,7 @@ const playerXInput = document.getElementById("playerXName");
 const playerOInput = document.getElementById("playerOName");
 const scoreXElem = document.getElementById("scoreX");
 const scoreOElem = document.getElementById("scoreO");
-const scoreTieElem = document.getElementById("scoreDraw"); 
+const scoreTieElem = document.getElementById("scoreDraw");
 
 const modeSelect = document.getElementById("gameMode");
 const boardSizeSelect = document.getElementById("boardSize");
@@ -33,7 +34,6 @@ const boardSizeSelect = document.getElementById("boardSize");
 const timerElem = document.getElementById("timer");
 const moveHistoryList = document.getElementById("moveHistory");
 const shareBtn = document.getElementById("shareBtn");
-
 
 let boardSize = parseInt(boardSizeSelect.value);
 let board = [];
@@ -50,10 +50,7 @@ let timerSeconds = 0;
 
 let moveHistory = [];
 
-
 const isPvC = () => modeSelect.value === "pvc";
-
-
 
 function formatTime(seconds) {
   const mins = Math.floor(seconds / 60);
@@ -72,8 +69,6 @@ function resetTimer() {
   timerElem.textContent = "00:00";
 }
 
-
-
 function generateBoard() {
   container.innerHTML = "";
   container.style.gridTemplateColumns = `repeat(${boardSize}, 1fr)`;
@@ -81,8 +76,10 @@ function generateBoard() {
 
   for (let i = 0; i < boardSize * boardSize; i++) {
     const tile = document.createElement("div");
-    tile.classList.add("tile");
+    tile.className = "tile"; // Reset classes
     tile.dataset.index = i;
+    tile.textContent = ""; // Clear content
+    tile.style.pointerEvents = "auto"; // Re-enable interaction
     tile.addEventListener("click", handleTileClick);
     container.appendChild(tile);
   }
@@ -112,11 +109,8 @@ function addMoveToLog(player, position) {
   const li = document.createElement("li");
   li.textContent = moveText;
   moveHistoryList.appendChild(li);
-
   moveHistoryList.scrollTop = moveHistoryList.scrollHeight;
 }
-
-
 
 function indexToRowCol(index) {
   return { row: Math.floor(index / boardSize), col: index % boardSize };
@@ -127,41 +121,15 @@ function checkWin(player) {
     if (board[r].every(cell => cell === player)) return true;
   }
   for (let c = 0; c < boardSize; c++) {
-    let colWin = true;
-    for (let r = 0; r < boardSize; r++) {
-      if (board[r][c] !== player) {
-        colWin = false;
-        break;
-      }
-    }
-    if (colWin) return true;
+    if (board.every(row => row[c] === player)) return true;
   }
-  let diag1 = true;
-  for (let i = 0; i < boardSize; i++) {
-    if (board[i][i] !== player) {
-      diag1 = false;
-      break;
-    }
-  }
-  if (diag1) return true;
-  let diag2 = true;
-  for (let i = 0; i < boardSize; i++) {
-    if (board[i][boardSize - 1 - i] !== player) {
-      diag2 = false;
-      break;
-    }
-  }
-  if (diag2) return true;
+  if (board.every((row, i) => row[i] === player)) return true;
+  if (board.every((row, i) => row[boardSize - 1 - i] === player)) return true;
   return false;
 }
 
 function checkTie() {
-  for (let r = 0; r < boardSize; r++) {
-    for (let c = 0; c < boardSize; c++) {
-      if (board[r][c] === "") return false;
-    }
-  }
-  return true;
+  return board.every(row => row.every(cell => cell !== ""));
 }
 
 function computerMove() {
@@ -244,7 +212,7 @@ function handleTileClick(e) {
   moveCount++;
 
   if (checkWin(currentPlayer)) {
-    announceResult(`${currentPlayer === "X" ? playerXInput.value.trim() || "Player X" : playerOInput.value.trim() || "Player O"} (${currentPlayer}) Wins!`);
+    announceResult(`${(currentPlayer === "X" ? playerXInput.value.trim() || "Player X" : playerOInput.value.trim() || "Player O")} (${currentPlayer}) Wins!`);
     if (currentPlayer === "X") scoreX++;
     else scoreO++;
     updateScoreboard();
@@ -284,9 +252,8 @@ function stopTimer() {
   timerInterval = null;
 }
 
-
-
 function startGame() {
+  boardSize = parseInt(boardSizeSelect.value); // Fix: ensure correct board size
   if (gameActive) {
     announceResult("Game already running!");
     return;
@@ -350,8 +317,6 @@ function shareResults() {
   soundButton.play();
 }
 
-
-
 startBtn.addEventListener("click", startGame);
 pauseBtn.addEventListener("click", pauseGame);
 resetBtn.addEventListener("click", resetGame);
@@ -369,10 +334,10 @@ boardSizeSelect.addEventListener("change", () => {
   resetGame();
 });
 
-
 generateBoard();
 updateDisplayTurn();
 updateScoreboard();
 resetTimer();
 pauseBtn.disabled = true;
 resetBtn.disabled = true;
+  
