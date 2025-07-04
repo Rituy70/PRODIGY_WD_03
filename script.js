@@ -2,8 +2,8 @@ const soundStart = new Audio('sounds/start.mp3');
 const soundWin = new Audio('sounds/win.mp3');
 const soundDraw = new Audio('sounds/draw.mp3');
 const soundButton = new Audio('sounds/click.mp3');
-const soundMove = new Audio('sounds/click.mp3'); // Added
-const soundTie = new Audio('sounds/draw.mp3');    // Added
+const soundMove = new Audio('sounds/click.mp3'); 
+const soundTie = new Audio('sounds/draw.mp3');    
 
 function announceResult(message) {
   announcer.textContent = message;
@@ -76,10 +76,10 @@ function generateBoard() {
 
   for (let i = 0; i < boardSize * boardSize; i++) {
     const tile = document.createElement("div");
-    tile.className = "tile"; // Reset classes
+    tile.className = "tile"; 
     tile.dataset.index = i;
-    tile.textContent = ""; // Clear content
-    tile.style.pointerEvents = "auto"; // Re-enable interaction
+    tile.textContent = ""; 
+    tile.style.pointerEvents = "auto"; 
     tile.addEventListener("click", handleTileClick);
     container.appendChild(tile);
   }
@@ -253,7 +253,7 @@ function stopTimer() {
 }
 
 function startGame() {
-  boardSize = parseInt(boardSizeSelect.value); // Fix: ensure correct board size
+  boardSize = parseInt(boardSizeSelect.value); 
   if (gameActive) {
     announceResult("Game already running!");
     return;
